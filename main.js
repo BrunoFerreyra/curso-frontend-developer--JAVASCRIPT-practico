@@ -6,13 +6,21 @@ Vamos a trabajar con la clase " inactive" para hacer aparecer y desaparecer el m
 
 const menuEmail = document.querySelector('.navbar-email');
 const desktopMenu = document.querySelector('.desktop-menu');
+const menuHamburgerIcon = document.querySelector('.menu');
+const mobileMenu = document.querySelector('.mobile-menu')
 
 
 menuEmail.addEventListener('click',mostrarMenu);
+menuHamburgerIcon.addEventListener('click',mostrarMenuMobile)
+
 
 function mostrarMenu(){
 //  cada vez que hagamos click, la siguiente orden "intercambia" 
 // si esta la clase inactive la elimina y si no esta la coloca
     desktopMenu.classList.toggle('inactive')
 }
-console.log("Probando");
+
+function mostrarMenuMobile(){
+    mobileMenu.classList.toggle('inactive');
+}
+
