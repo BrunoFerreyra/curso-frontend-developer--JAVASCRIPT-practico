@@ -3,27 +3,36 @@
 Vamos a trabajar con la clase " inactive" para hacer aparecer y desaparecer el menu a nuestro deseo
 
 */
-// Estos elementos los vamos a ESCUCHAR 
+// Estos elementos / iconos los vamos a ESCUCHAR / APRETAR 
 const menuEmail         = document.querySelector('.navbar-email');                  //"boton Email"
 const menuHamburgerIcon = document.querySelector('.menu');                          //"boton Menu Mobile"
-const menuCarritoIcon  = document.querySelector('.navbar-shopping-cart')            //"Menu shopping cart"
+const menuCarritoIcon   = document.querySelector('.navbar-shopping-cart')            //"Menu shopping cart"
+const productDetailCloseIcon =  document.querySelector('.product-detail-close');
 // cuando escuchemos los anteriores, mostramos estos:
-const desktopMenu = document.querySelector('.desktop-menu');                //
-const mobileMenu  = document.querySelector('.mobile-menu');                  //
-const aside       = document.querySelector('.product-detail');            //
+const desktopMenu            = document.querySelector('.desktop-menu');                //
+const mobileMenu             = document.querySelector('.mobile-menu');                  //
+const shoppingCartContainer  = document.querySelector('#shoppingCartContainer');            //
+
+const productDetail= document.querySelector('#productDetail');
+
 // Escucho clicks:
 menuEmail.addEventListener('click',mostrarMenu);
 menuHamburgerIcon.addEventListener('click',mostrarMenuMobile)
 menuCarritoIcon.addEventListener('click',mostrarAside)
+productDetailCloseIcon.addEventListener('click',closeDetails)
+
 //Inactive es un nombre cualquiera que le pusimos a la clase
 // los elementos desaparecen porque a  la clase .inactive fuimos
 // a CSS y para todos los elementos con esa clase pusimos display:none 
 function mostrarMenu(){
-    const isAsideClosed   = aside.classList.contains('inactive');
-
+    const isAsideClosed   = shoppingCartContainer.classList.contains('inactive');
+    const isProductDetailClosed = productDetail.classList.contains('inactive');
     if (!isAsideClosed){
-        aside.classList.add('inactive');
-        }
+        shoppingCartContainer.classList.add('inactive');};
+    if (!isProductDetailClosed){
+        productDetail.classList.add('inactive')
+    }
+
 
     //  cada vez que hagamos click, la siguiente orden "intercambia" 
 // si esta la clase inactive la elimina y si no esta la coloca
@@ -31,21 +40,27 @@ function mostrarMenu(){
 }
 function mostrarMenuMobile(){
     //RECORDAR: ESTA FUNCION SE EJECUTA CUANDO SE APRETA ICONO MENU MOBILE (HAMBURGUER)
-
-    const   isAsideClosed         = aside.classList.contains('inactive');
-// SI EL CARRITO ESTABA ABIERTO LO CIERRO
+    const   isAsideClosed         = shoppingCartContainer.classList.contains('inactive');
+    const   isProductDetailClosed = productDetail.classList.contains('inactive');
+    
+    // SI EL CARRITO ESTABA ABIERTO LO CIERRO
     if  (!isAsideClosed){
-        aside.classList.add('inactive')
+        shoppingCartContainer.classList.add('inactive')
+    }else if (!isProductDetailClosed){
+        productDetail.classList.add('inactive');
     }
 // HAGO EL TOGGLE NORMAL DE LA FUNCION    
     mobileMenu.classList.toggle('inactive');
 }
 function mostrarAside(){
     //RECORDAR: ESTA FUNCION SE ABRE CUANDO SE APRETA CARRITO
+    // seria MOSTRAR CARRITO DE COMPRAS
     // variable booleana que dice si el menu mobile esta cerrado
     // si contiene .inactive significa que
     const   isMobileMenuClosed    = mobileMenu.classList.contains('inactive');
     const   isDesktopMenuClosed  = desktopMenu.classList.contains('inactive');
+    const isProductDetailClosed = productDetail.classList.contains('inactive');
+    
     //SI QUIERO ABRIR CARRITO Y MOBILE MENU ESTA ABIERTO LO CIERRO
     if (!isMobileMenuClosed){
         mobileMenu.classList.add('inactive');
@@ -53,11 +68,27 @@ function mostrarAside(){
     // si al querer abrir el carrito esta abierto el menu desktop cierro este ultimo
     if (!isDesktopMenuClosed){
         desktopMenu.classList.add('inactive')    
+    }else if (!isProductDetailClosed){
+        productDetail.classList.add('inactive');
     }
     // HAGO EL TOGGLE NORMAL DE LA FUNCION
-    aside.classList.toggle('inactive');    
+    shoppingCartContainer.classList.toggle('inactive');    
     
     
+}
+function openProductDetailAside(){
+    const isAsideClosed   = shoppingCartContainer.classList.contains('inactive');
+    const isDesktopMenuClosed = desktopMenu.classList.contains('inactive');
+
+    if(!isAsideClosed){
+        shoppingCartContainer.classList.add('inactive')
+    }else if(!isDesktopMenuClosed){
+        desktopMenu.classList.add('inactive');
+    }
+    productDetail.classList.toggle('inactive')
+}
+function closeDetails(){
+    productDetail.classList.add('inactive');
 }
 
 // Clase 4: productos
@@ -78,12 +109,12 @@ productList.push({
     price: 1000,
     image: "./iara/iara1.jpg"
 });
+/*
 productList.push({
     name: 'Megara3',
     price: 1500,
     image: "./iara/iara3.jpg"
 });
-/*
 <div class="product-card">
       <img src="./iara/iara2.jpg" alt="">
       <div class="product-info">
@@ -99,8 +130,6 @@ productList.push({
     */
 
 // Aqui creamos el html de cada producto con la estructura de arriba
-
-
 function renderProducts(arr){
     for (product of arr){
         const productCard = document.createElement('div')
@@ -111,6 +140,8 @@ function renderProducts(arr){
         // es decir la imagen correspondiente de cada objeto
         const productImg = document.createElement('img')
         productImg.setAttribute('src',product.image);
+        productImg.addEventListener('click',openProductDetailAside);
+
         
         // hacemos lo mismo para el segundo div de clase "product-info"
         const productInfo = document.createElement('div');
@@ -120,7 +151,7 @@ function renderProducts(arr){
     
         const productInfoDiv = document.createElement('div');       //este es el dive que tiene el precio y el nombre
         
-        const productPrice = document.createElement('p')
+        const productPrice = document.createElement('p');
         productPrice.innerText = '$' + product.price;
         const productName = document.createElement('p');
         productName.innerText = document.Name;
@@ -154,15 +185,6 @@ function renderProducts(arr){
         cardsContainer.appendChild(productCard)
         
     }
-}
-
+};
 renderProducts (productList)
-
-
-
-
-
-
-
-
 
